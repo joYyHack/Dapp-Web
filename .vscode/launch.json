@@ -7,7 +7,15 @@
     {
       "type": "pwa-chrome",
       "request": "launch",
-      "name": "Launch Chrome against localhost",
+      "name": "Chrome Localhost",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "type": "pwa-chrome",
+      "request": "launch",
+      "name": "Brave Localhost",
+      "runtimeExecutable": "/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe",
       "url": "http://localhost:3000",
       "webRoot": "${workspaceFolder}"
     }
