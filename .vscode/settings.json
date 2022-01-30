@@ -3,5 +3,27 @@
   "editor.formatOnSave": true,
   "[solidity]": {
     "editor.defaultFormatter": "JuanBlanco.solidity"
-  }
+  },
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "files.exclude": {
+    //local
+    "**/node_modules": true,
+    "**/package.json": false,
+    "**/package-lock.json": true,
+
+    //client
+    "**/postcss.config.js": true,
+    "**/tailwind.config.js": true,
+    "**/vite.config.js": true,
+
+    //Smart contracts ABI
+    "**/build": true,
+
+    //SVG
+    "**/favicon.svg": true,
+    "**/logo.svg": true
+  },
+  "cSpell.words": ["glassmorphism"]
 }

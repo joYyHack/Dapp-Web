@@ -1,0 +1,16 @@
+{
+  "name": "smart-contract",
+  "version": "1.0.0",
+  "description": "All dependencies for interacting with blockchain",
+  "author": "AG",
+  "license": "ISC",
+  "dependencies": {
+    "identicon": "^3.1.1",
+    "web3": "^1.7.0"
+  },
+  "devDependencies": {
+    "chai": "^4.3.6",
+    "chai-as-promised": "^7.1.1",
+    "chai-bignumber": "^3.0.0"
+  }
+}

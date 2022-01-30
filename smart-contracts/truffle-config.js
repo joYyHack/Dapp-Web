@@ -6,7 +6,7 @@ module.exports = {
       network_id: "*", // Match any network id
     },
   },
-  contracts_directory: "./smart-contracts/contracts",
+  contracts_directory: "./contracts",
   compilers: {
     solc: {
       version: "^0.8.0",
