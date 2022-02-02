@@ -19,7 +19,7 @@
     "**/vite.config.js": true,
 
     //Smart contracts ABI
-    "**/build": true,
+    "**/build": false,
 
     //SVG
     "**/favicon.svg": true,
