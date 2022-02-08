@@ -7,8 +7,6 @@ import React, { useContext } from "react";
 
 const CommonStyles = "min-h-[70px] sm:px-0 px-2 sm:min-w-[95px] flex justify-center items-center border-[0.5px] border-gray-400 text-sm font-light text-white hover:bg-sky-900 ease-in duration-100";
 
-const ConnectWallet = () => {};
-
 const HandleTransaction = () => {};
 
 const InputField = ({ placeholder, name, type, value, onChangeFunc }) => (
@@ -23,8 +21,7 @@ const InputField = ({ placeholder, name, type, value, onChangeFunc }) => (
 );
 
 const Welcome = () => {
-  const { value } = useContext(TransactionContext);
-  console.log(value);
+  const { connectWallet } = useContext(TransactionContext);
 
   return (
     <div className='flex justify-center items-center w-full'>
@@ -36,7 +33,7 @@ const Welcome = () => {
 
           <p className='text-base font-light md:w-9/12 w-11/12'>Explore crypto world by AG Service</p>
 
-          <button type='button' onClick={ConnectWallet} className='flex flex-row justify-center item-center my-5 bg-sky-500 p-3 rounded-full cursor-pointer hover:bg-sky-800 ease-linear duration-100'>
+          <button type='button' onClick={connectWallet} className='flex flex-row justify-center item-center my-5 bg-sky-500 p-3 rounded-full cursor-pointer hover:bg-sky-800 ease-linear duration-100'>
             <p className='text-base font-semibold'>Connect Wallet</p>
           </button>
 
