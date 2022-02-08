@@ -10,7 +10,7 @@
   "files.exclude": {
     //local
     "**/node_modules": true,
-    "**/package.json": true,
+    "**/package.json": false,
     "**/package-lock.json": true,
 
     //client
@@ -25,5 +25,6 @@
     "**/favicon.svg": true,
     "**/logo.svg": true
   },
-  "cSpell.words": ["glassmorphism", "semibold"]
+  "cSpell.words": ["esbuild", "glassmorphism", "semibold", "vite", "vitejs"],
+  "prettier.printWidth": 200
 }
