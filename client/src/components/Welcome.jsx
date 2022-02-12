@@ -5,9 +5,9 @@ import { Loader } from "./";
 import { TransactionContext } from "../context/TransactionContext";
 import React, { useContext } from "react";
 
-const CommonStyles = "min-h-[70px] sm:px-0 px-2 sm:min-w-[95px] flex justify-center items-center border-[0.5px] border-gray-400 text-sm font-light text-white hover:bg-sky-900 ease-in duration-100";
-
-const HandleTransaction = () => {};
+const CommonStyles =
+  "min-h-[70px] sm:px-0 px-2 sm:min-w-[95px] flex justify-center items-center border-[0.5px] border-gray-400 text-sm font-light " +
+  "text-white hover:bg-sky-900 ease-in duration-100";
 
 const InputField = ({ placeholder, name, type, value, onChangeFunc }) => (
   <input
@@ -21,7 +21,17 @@ const InputField = ({ placeholder, name, type, value, onChangeFunc }) => (
 );
 
 const Welcome = () => {
-  const { connectWallet } = useContext(TransactionContext);
+  const { connectWallet, currentConnectedAccount, transactionData, handleChange, sendTransaction } = useContext(TransactionContext);
+
+  const handleTransaction = async () => {
+    try {
+      const { toAddress, amount, keyword, message } = transactionData;
+      if (!toAddress || !amount || !keyword || !message) throw "Fill all inputs in form!";
+      await sendTransaction();
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <div className='flex justify-center items-center w-full'>
@@ -33,9 +43,23 @@ const Welcome = () => {
 
           <p className='text-base font-light md:w-9/12 w-11/12'>Explore crypto world by AG Service</p>
 
-          <button type='button' onClick={connectWallet} className='flex flex-row justify-center item-center my-5 bg-sky-500 p-3 rounded-full cursor-pointer hover:bg-sky-800 ease-linear duration-100'>
-            <p className='text-base font-semibold'>Connect Wallet</p>
-          </button>
+          {currentConnectedAccount ? (
+            <div
+              className='flex flex-row justify-center item-center my-5 bg-green-500 p-3 rounded-full cursor-pointer 
+              hover:bg-green-800 ease-linear duration-100'>
+              <p className='text-base text-center font-semibold'>
+                Connected to MetaMask <span className='text-xs font-normal'>{currentConnectedAccount}</span>
+              </p>
+            </div>
+          ) : (
+            <button
+              type='button'
+              onClick={connectWallet}
+              className='flex flex-row justify-center item-center my-5 bg-sky-500 p-3 rounded-full cursor-pointer 
+              hover:bg-sky-800 ease-linear duration-100'>
+              <p className='text-base text-center font-semibold'>Connect Wallet</p>
+            </button>
+          )}
 
           <div className='grid sm:grid-cols-3 grid-cols-2 w-full mt-10'>
             <div className={`${CommonStyles} rounded-tl-2xl`}>Reliability</div>
@@ -69,10 +93,10 @@ const Welcome = () => {
           </div>
 
           <div className='p-5 sm:w-96 w-full flex flex-col justify-start items-center blue-glassmorphism'>
-            <InputField placeholder='To Address' name='toAddress' type='text' onChangeFunc={() => {}} />
-            <InputField placeholder='Amount (ETH)' name='amount' type='number' onChangeFunc={() => {}} />
-            <InputField placeholder='Keyword(optional)' name='keyword' type='text' onChangeFunc={() => {}} />
-            <InputField placeholder='Message(optional)' name='message' type='text' onChangeFunc={() => {}} />
+            <InputField placeholder='To Address' name='toAddress' type='text' onChangeFunc={handleChange} />
+            <InputField placeholder='Amount (ETH)' name='amount' type='number' onChangeFunc={handleChange} />
+            <InputField placeholder='Keyword(optional)' name='keyword' type='text' onChangeFunc={handleChange} />
+            <InputField placeholder='Message(optional)' name='message' type='text' onChangeFunc={handleChange} />
 
             <div className='h-[1px] w-full bg-gray-400 my-2'></div>
 
@@ -81,8 +105,9 @@ const Welcome = () => {
             ) : (
               <button
                 type='button'
-                onClick={HandleTransaction}
-                className='text-white w-full mt-2 border-[1px] p-2 border-[#3a5494] cursor-pointer rounded-full hover:bg-[#5c6d97] ease-linear duration-200'>
+                onClick={handleTransaction}
+                className='text-white w-full mt-2 border-[1px] p-2 border-[#3a5494] cursor-pointer rounded-full hover:bg-[#5c6d97]
+                           ease-linear duration-200'>
                 Send
               </button>
             )}
