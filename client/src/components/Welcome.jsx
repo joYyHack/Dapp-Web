@@ -21,7 +21,8 @@ const InputField = ({ placeholder, name, type, value, onChangeFunc }) => (
 );
 
 const Welcome = () => {
-  const { connectWallet, currentConnectedAccount, transactionData, handleChange, sendTransaction } = useContext(TransactionContext);
+  const { connectWallet, currentConnectedAccount, transactionData, handleTransactionFormChange, sendTransaction } =
+    useContext(TransactionContext);
 
   const handleTransaction = async () => {
     try {
@@ -93,10 +94,10 @@ const Welcome = () => {
           </div>
 
           <div className='p-5 sm:w-96 w-full flex flex-col justify-start items-center blue-glassmorphism'>
-            <InputField placeholder='To Address' name='toAddress' type='text' onChangeFunc={handleChange} />
-            <InputField placeholder='Amount (ETH)' name='amount' type='number' onChangeFunc={handleChange} />
-            <InputField placeholder='Keyword(optional)' name='keyword' type='text' onChangeFunc={handleChange} />
-            <InputField placeholder='Message(optional)' name='message' type='text' onChangeFunc={handleChange} />
+            <InputField placeholder='To Address' name='toAddress' type='text' onChangeFunc={handleTransactionFormChange} />
+            <InputField placeholder='Amount (ETH)' name='amount' type='number' onChangeFunc={handleTransactionFormChange} />
+            <InputField placeholder='Keyword(optional)' name='keyword' type='text' onChangeFunc={handleTransactionFormChange} />
+            <InputField placeholder='Message(optional)' name='message' type='text' onChangeFunc={handleTransactionFormChange} />
 
             <div className='h-[1px] w-full bg-gray-400 my-2'></div>
 

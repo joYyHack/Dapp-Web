@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Web3 from "web3";
 import detectEthereumProvider from "@metamask/detect-provider";
 import { TransactionsContractAddr, TransactionsABI, AGTempAddr, AGAddr } from "../utils/constants";
+import { BsWindowSidebar } from "react-icons/bs";
 
 export const TransactionContext = React.createContext();
 
@@ -31,11 +32,18 @@ export const TransactionContextProvider = ({ children }) => {
 
       console.log("MetaMask is installed!");
 
-      const accounts = await ethereum.request({ method: "eth_accounts" });
+      if (ethereum.isConnected()) {
+        ethereum
+          .request({ method: "eth_chainId" })
+          .then((chainId) => console.log(`Chain ID: ${chainId}`))
+          .catch((err) => console.log(`Error on 'eth_chainId': ${err}`));
+      }
+
+      const accounts = await ethereum.request({ method: "eth_accounts" }).catch((err) => console.log(`Error on eth_accounts: ${err}`));
       accounts.length && setCurrentConnectedAccount(accounts[0]);
 
-      if (accounts.length) console.log(`Your wallet is connected.\nYour current connected account is: ${accounts[0]}`);
-      else throw "You have no accounts connected. Try to connect your wallet using connectWallet() function!";
+      if (accounts.length) console.log(`Wallet is connected.\nYour current connected account is: ${accounts[0]}`);
+      else throw "You have no accounts connected. Try to connect your wallet pressing 'Connect Wallet' button!";
 
       return true;
     } catch (e) {
@@ -47,19 +55,39 @@ export const TransactionContextProvider = ({ children }) => {
   const connectWallet = async () => {
     ethereum
       .request({ method: "eth_requestAccounts" })
-      .then((accounts) => console.log(accounts))
+      .then((accounts) => {
+        accounts.length && window.location.reload();
+      })
       .catch((err) => {
-        if (err.code === 4001) return console.log(`Please connect to MetaMask. Error description:\n${err}`);
-        else return console.error(err);
+        if (err.code === 4001) return console.log(`Error on eth_requestAccounts: ${err}`);
+        else return console.log(`Error on eth_requestAccounts: ${err}`);
       });
   };
 
+  const SetEthereumListeners = () => {
+    ethereum.on("disconnect", (err) => {
+      console.log(`Wallet was disconnected: ${err}`);
+    });
+
+    ethereum.on("accountsChanged", (newAccounts) => {
+      if (newAccounts.length) setCurrentConnectedAccount(newAccounts[0]);
+      else setCurrentConnectedAccount("");
+
+      console.log(`Account was changed: ${newAccounts[0]}`);
+    });
+
+    ethereum.on("chainChanged", (chainId) => window.location.reload());
+
+    console.log("All ethereum listeners are set!");
+  };
+
   useEffect(async () => {
-    await checkIfMetaMaskIsInstalledAndConnected();
+    let connected = await checkIfMetaMaskIsInstalledAndConnected();
+    connected && SetEthereumListeners();
   }, []);
 
   //Function which updates transaction data in form on each symbol update(I SUPPOSE :D)
-  const handleChange = (e, name) => {
+  const handleTransactionFormChange = (e, name) => {
     updateTransactionData((prevState) => ({ ...prevState, [name]: e.target.value }));
   };
 
@@ -85,6 +113,7 @@ export const TransactionContextProvider = ({ children }) => {
         // .on("receipt", (receipt) => {
         //   console.log(`receipt: ${JSON.stringify(receipt)}`);
         // });
+
         console.log("Complete");
       }
     } catch (e) {
@@ -93,7 +122,8 @@ export const TransactionContextProvider = ({ children }) => {
   };
 
   return (
-    <TransactionContext.Provider value={{ connectWallet, currentConnectedAccount, transactionData, handleChange, sendTransaction }}>
+    <TransactionContext.Provider
+      value={{ connectWallet, currentConnectedAccount, transactionData, handleTransactionFormChange, sendTransaction }}>
       {children}
     </TransactionContext.Provider>
   );
